@@ -11,6 +11,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit; //all time keeping services have been taught though Chat GPB, although writen by me 
 import java.util.Scanner;
+import javax.swing.*;
+
 
 /*
 have hit all design criteria (i think?) apart from using 2 kinds of collections, currently only using a hash map for the save and load functions.
@@ -22,7 +24,7 @@ public class Main {
 
     private Rock rock; // undefined pet, ill define it in loadpet method
 
-    public void loadPet() {
+    /*public void loadPet() {
         System.out.print("Enter your pet's name: ");
         String petName = scanner.nextLine().trim();//allows users to name their pets :) and then trims the input to only use the charactors. thats important for the formatting when i add "'s" to the stats output
 
@@ -37,7 +39,7 @@ public class Main {
             rock = new Rock(petName, 100, 100, 100, 100, 400); // Default stats for rock
             saveManager.savePet(petName, 100, 100, 100, 100, 400); // create new pet save to be overwritten when the program closes
         }
-    }
+    }*/
     private final Scanner scanner = new Scanner(System.in);
     private final Scanner scanner1 = new Scanner(System.in); // second scanner for switch function, done to avoid bugs in how the scanner procecces. was reading invalid command after walk funtion. pretty sure theres a prettier solution for this but it was all i could think of
 
@@ -48,7 +50,7 @@ public class Main {
         }
         //needs to invoke a save function to text file -- done
         System.out.println("Program shutting down");
-        new SaveManager().savePet(rock.getName(), rock.hungervalue(), rock.happyvalue(), rock.fitnessvalue(), rock.energyvalue(), rock.agevalue());
+        //new SaveManager().savePet(rock.getName(), rock.hungervalue(), rock.happyvalue(), rock.fitnessvalue(), rock.energyvalue(), rock.agevalue());
         System.out.println(rock.getName() + " saved");
         System.exit(0); //program shutdown
     }
@@ -138,12 +140,18 @@ public class Main {
     }
 
     // Main method to run the game
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Main game = new Main(); //call methods
-        game.loadPet();
+        SwingUtilities.invokeLater(() -> {
+            MainGameGUI mainGameGUI = new MainGameGUI();
+            mainGameGUI.setVisible(true); // Make the GUI visible
+        });
+        //game.loadPet();
         System.out.println("Avalible commands: Info, Feed, Pet, Smack, walk, Exit, Help"); //smack is primarilty there for testing although i may keep it as a function
         game.DeathCheck(); //self exsplanatory
-        game.startGame(); // Start the game loop
-        game.scanner.close(); //bc i cant put this in the end loop
+        
+        game.startGame(); // This handles the interactive gameplay loop
+        game.scanner.close(); // Close the scanner when the game ends
+
     }
 }

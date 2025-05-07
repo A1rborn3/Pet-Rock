@@ -15,9 +15,11 @@ public class SaveManager {
 
     private static final String FilePath = "resources/pet_saves.txt";
     private final Map<String, int[]> petData;
-
+    private final Map<String, String> petNames;
+    
     public SaveManager() {
         petData = new HashMap<>();
+        petNames = new HashMap<>();
         loadpet();
     }
 
@@ -32,15 +34,17 @@ public class SaveManager {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 6) {
-                    String name = parts[0];
-                    int hunger = Integer.parseInt(parts[1]);
-                    int happiness = Integer.parseInt(parts[2]);
-                    int fitness = Integer.parseInt(parts[3]);
-                    int energy = Integer.parseInt(parts[4]);
-                    int age = Integer.parseInt(parts[5]);
+                if (parts.length == 7) {
+                    String slot = parts[0];
+                    String name = parts[1];
+                    int hunger = Integer.parseInt(parts[2]);
+                    int happiness = Integer.parseInt(parts[3]);
+                    int fitness = Integer.parseInt(parts[4]);
+                    int energy = Integer.parseInt(parts[5]);
+                    int age = Integer.parseInt(parts[6]);
 
-                    petData.put(name, new int[]{hunger, happiness, fitness, energy, age});
+                    petData.put(slot, new int[]{ hunger, happiness, fitness, energy, age});
+                    petNames.put(slot, name); // new hash map so i can display names in menu
                 }
             }
         } catch (IOException e) {
@@ -48,17 +52,19 @@ public class SaveManager {
         }
     }
 
-    public void savePet(String name, int hunger, int happiness, int fitness, int energy, int age) {
-        petData.put(name, new int[]{hunger, happiness, fitness, energy, age});
+    public void savePet(int slot, String name, int hunger, int happiness, int fitness, int energy, int age) {
+        petData.put("slot" + slot, new int[]{ hunger, happiness, fitness, energy, age});
         writeToFile();
     }
 
     private void writeToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FilePath))) {
-            for (Map.Entry<String, int[]> entry : petData.entrySet()) {
-                writer.write(entry.getKey() + "," + entry.getValue()[0] + "," + entry.getValue()[1] + "," + entry.getValue()[2] + "," + entry.getValue()[3] + "," + entry.getValue()[4]);
-                writer.newLine();
-            }
+            for (String key : petData.keySet()) {
+            int[] stats = petData.get(key);
+            String name = petNames.get(key);
+            writer.write(key + "," + name + "," + stats[0] + "," + stats[1] + "," + stats[2] + "," + stats[3] + "," + stats[4]);
+            writer.newLine();
+        } //updaed to work betwen two hashmaps (name and stats)
         } catch (IOException e) {
             System.err.println("Error saving pet: " + e.getMessage());
         }
@@ -67,9 +73,12 @@ public class SaveManager {
     public boolean petExists(String name) {
         return petData.containsKey(name);
     }
-    
-    public int[] getPetStats(String name) {
-        return petData.getOrDefault(name, new int[]{100, 100, 100, 100, 400}); // Default stats if pet isn't found
-    }
 
+    public int[] getPetStats(int slot) {
+        return petData.getOrDefault("slot" + slot, new int[]{100, 100, 100, 100, 400}); // Default stats if pet isn't found
+    }
+    
+    public String getPetName(int slot){
+        return petNames.get("slot" + slot);
+    }
 }
