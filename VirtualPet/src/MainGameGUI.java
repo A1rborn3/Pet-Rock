@@ -17,6 +17,7 @@ public class MainGameGUI extends JFrame {
     private JPanel mainPanel;
 
     public MainGameGUI() {
+
         setTitle("Pet Rock");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(800, 600);

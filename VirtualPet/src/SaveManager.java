@@ -54,6 +54,7 @@ public class SaveManager {
 
     public void savePet(int slot, String name, int hunger, int happiness, int fitness, int energy, int age) {
         petData.put("slot" + slot, new int[]{ hunger, happiness, fitness, energy, age});
+        petNames.put("slot" + slot, name);
         writeToFile();
     }
 

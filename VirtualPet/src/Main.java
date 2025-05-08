@@ -57,6 +57,11 @@ public class Main {
     private ScheduledExecutorService scheduler;
     //for death checker, could put this in another class but doesnt feel neccacery 
 
+    public void setRock(Rock rock) {
+        
+        this.rock = rock;
+    }//a set method to be called from my save class
+
     public void DeathCheck() {//checks stats every 5 secs to see if pet is alive
         scheduler = Executors.newScheduledThreadPool(1);
 
@@ -149,7 +154,7 @@ public class Main {
         //game.loadPet();
         System.out.println("Avalible commands: Info, Feed, Pet, Smack, walk, Exit, Help"); //smack is primarilty there for testing although i may keep it as a function
         game.DeathCheck(); //self exsplanatory
-        
+
         game.startGame(); // This handles the interactive gameplay loop
         game.scanner.close(); // Close the scanner when the game ends
 
