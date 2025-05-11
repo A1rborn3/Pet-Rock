@@ -1,0 +1,15 @@
+add active listeners to GameGUI to controll what StartGame() in main used to
+
+draw the diffrent stages of the rock
+
+have dirrent images for the rock, background, items, food bowl, ect to have overlayed in the GUI to create the full screen
+
+
+go through main and see if i still want that class or if its obcelete
+
+setup a pause menu with the ability to load another pet, exit
+
+add an option to overwrite existing save or load save when choosing a save
+
+add shop with better foods n stuff
+maybe a comfort stat too and things to buy for your pet

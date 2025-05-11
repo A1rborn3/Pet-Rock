@@ -57,11 +57,6 @@ public class Main {
     private ScheduledExecutorService scheduler;
     //for death checker, could put this in another class but doesnt feel neccacery 
 
-    public void setRock(Rock rock) {
-        
-        this.rock = rock;
-    }//a set method to be called from my save class
-
     public void DeathCheck() {//checks stats every 5 secs to see if pet is alive
         scheduler = Executors.newScheduledThreadPool(1);
 
@@ -97,6 +92,9 @@ public class Main {
         ); // Check every 2 seconds for system warnings Eg too sad, hungry, unfit
     }
 
+    
+    
+    //might keep a class for logic and have a update function
     public void startGame() {
 
         String command;
@@ -147,15 +145,23 @@ public class Main {
     // Main method to run the game
     public static void main(String[] args) throws InterruptedException {
         Main game = new Main(); //call methods
-        SwingUtilities.invokeLater(() -> {
-            MainGameGUI mainGameGUI = new MainGameGUI();
-            mainGameGUI.setVisible(true); // Make the GUI visible
-        });
+
+        MainGameGUI mainGameGUI = new MainGameGUI();
+        mainGameGUI.setVisible(true); // Make the GUI visible
+
         //game.loadPet();
-        System.out.println("Avalible commands: Info, Feed, Pet, Smack, walk, Exit, Help"); //smack is primarilty there for testing although i may keep it as a function
+        while (mainGameGUI.getRock() == null) {
+            Thread.sleep(100); // prevent tight loop
+        }
+
+        game.rock = mainGameGUI.getRock();
+
+        System.out.println(
+                "Avalible commands: Info, Feed, Pet, Smack, walk, Exit, Help"); //smack is primarilty there for testing although i may keep it as a function
         game.DeathCheck(); //self exsplanatory
 
         game.startGame(); // This handles the interactive gameplay loop
+
         game.scanner.close(); // Close the scanner when the game ends
 
     }

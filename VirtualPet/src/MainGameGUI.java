@@ -13,9 +13,12 @@ import java.awt.event.ActionListener;
  */
 public class MainGameGUI extends JFrame {
 
+
     private CardLayout cardLayout;
     private JPanel mainPanel;
-
+    SaveMenuGUI saveMenuGUI = new SaveMenuGUI(this);
+    private GameGUI gameGUI;
+    
     public MainGameGUI() {
 
         setTitle("Pet Rock");
@@ -27,16 +30,28 @@ public class MainGameGUI extends JFrame {
         mainPanel = new JPanel(cardLayout);
 
         //GameGUI gameGUI = new GameGUI(this);
-        SaveMenuGUI saveMenuGUI = new SaveMenuGUI(this);
+        saveMenuGUI = new SaveMenuGUI(this);
+        gameGUI = new GameGUI(this);
+        
         mainPanel.add(saveMenuGUI, "save_menu");
+        mainPanel.add(gameGUI, "game");
 
         add(mainPanel);
 
         setVisible(true);
     }
 
+    public void RockLoadToGame(Rock rock) {
+        this.gameGUI.setRock(rock); // pass pet data to GameGUI
+        showCard("game");
+    }
+    
     public void showCard(String cardName) {
         cardLayout.show(mainPanel, cardName);
+    }
+    
+    public Rock getRock(){
+        return saveMenuGUI.getRock();
     }
 }
 

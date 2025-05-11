@@ -14,7 +14,7 @@ public class SaveMenuGUI extends JPanel {
 
     private final SaveManager saveManager = new SaveManager();
     private Rock rock;
-    
+
     public SaveMenuGUI(MainGameGUI parent) {
         setLayout(new GridLayout(5, 1, 10, 10));
         for (int i = 1; i <= 5; i++) {
@@ -47,8 +47,10 @@ public class SaveMenuGUI extends JPanel {
                         saveManager.savePet(slot, newName, 100, 100, 100, 100, 400);
                         System.out.println(newName);
 
-
                     }
+                }
+                if (rock != null) {
+                    parent.RockLoadToGame(rock); // <-- this triggers the card swap
                 }
             }
             );
@@ -56,9 +58,8 @@ public class SaveMenuGUI extends JPanel {
         }
 
     }
-    
 
-    public Rock getRock(){
+    public Rock getRock() {
         return rock;
     }
 }
