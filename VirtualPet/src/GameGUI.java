@@ -47,9 +47,27 @@ public class GameGUI extends JPanel {
 
         add(pause, BorderLayout.NORTH); //sublayout goes as top of main layout
         
+        infoButton.addActionListener((ActionEvent e) ->{
+            rock.showInfo();// remove later bc it should do automatically
+        });
         
-        //next step to add active listeners and have them control what used to be startGame() in main// then have some fun drawing the rock at diffrent stages
+        feedButton.addActionListener((ActionEvent e) ->{
+            rock.feed();
+        });
+        
+        petButton.addActionListener((ActionEvent e) ->{
+            rock.pet();
+        });
+        
+        walkButton.addActionListener((ActionEvent e) ->{
+            //add walking gui
+        });
+        
+        exitButton.addActionListener((ActionEvent e) ->{
+            //add exit function
+        });
 
+        //next step to add active listeners and have them control what used to be startGame() in main// then have some fun drawing the rock at diffrent stages
     }
 
     public void setRock(Rock rock) {

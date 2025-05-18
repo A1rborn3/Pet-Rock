@@ -4,6 +4,7 @@ draw the diffrent stages of the rock
 
 have dirrent images for the rock, background, items, food bowl, ect to have overlayed in the GUI to create the full screen
 
+make buttons prittier
 
 go through main and see if i still want that class or if its obcelete
 
