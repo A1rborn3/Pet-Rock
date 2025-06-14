@@ -1,0 +1,4 @@
+You can feed your pet to give it more energy
+if your pets happieness gets too low, it may die of depression
+Don't walk your pet too much, otherwise you may exhaust them
+You can exit or change saves at any time from the pause menu

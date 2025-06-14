@@ -16,21 +16,21 @@ class Rock extends Pet {
     @Override
     public void pet() {
         happy.increase(10);
-        System.out.println("Happiness increased to: " + happy.getValue());
+        //System.out.println("Happiness increased to: " + happy.getValue());
     }
 
     @Override
     public void feed() {
         hunger.increase(10);
         energy.increase(15);
-        System.out.println("Food increased to: " + hunger.getValue());
-        System.out.println("Energy increased to: " + energy.getValue());
+        //System.out.println("Food increased to: " + hunger.getValue());
+        //System.out.println("Energy increased to: " + energy.getValue());
     }
 
     @Override
     public void hurt() {
         happy.decrease(40);
-        System.out.println("ouch wtf. Happiness decresed to: " + happy.getValue());
+        //System.out.println("ouch wtf. Happiness decresed to: " + happy.getValue());
     }
     
     @Override
@@ -38,6 +38,8 @@ class Rock extends Pet {
         fitness.increase(distance/10);
         happy.increase(10);
         energy.decrease(distance/20); // max energy loss is 50
-        System.out.println("The Rock likes walks, Happiness increased to: " + happy.getValue() + " , Fitness increased to: " + fitness.getValue() + ", and Energy decreased to: " + energy.getValue());
+        //System.out.println("The Rock likes walks, Happiness increased to: " + happy.getValue() + " , Fitness increased to: " + fitness.getValue() + ", and Energy decreased to: " + energy.getValue());
     }
+    
+    
 }

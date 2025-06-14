@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.ArrayList;
+import java.sql.*;
 
 /**
  *
@@ -17,28 +20,39 @@ import java.util.concurrent.TimeUnit;
  */
 public class GameGUI extends JPanel {
 
-    private Rock rock;
-    private JLabel petImageLabel;
+    public Rock rock;
+    private MainImageGUI MainImage;
     private JButton feedButton, petButton, walkButton, shopButton, exitButton, pauseButton;
     private JProgressBar HungerBar, HappyBar, FitnessBar, EnergyBar;
     Map<String, JLabel> statLabels = new HashMap<>();
+    private DeathChecks deathChecks;
+    private DeathGUI deathGUI;
+    private MainGameGUI Parent;
+    private SaveManager SaveManager;
+    private JLabel tipLabel;
+    private List<String> tips;
+    private int currentTipIndex = 0;
+    private final String TIPS_FILE = "resources/tips.txt";
+    private boolean IsDead = false;
 
-    public GameGUI(MainGameGUI parent) {
+    public GameGUI(MainGameGUI parent, SaveManager saveManager) {
+        Parent = parent;
+        SaveManager = saveManager;
+        deathChecks = new DeathChecks(saveManager, this);
+        deathGUI = new DeathGUI(this);
         setLayout(new BorderLayout());
 
-        //replace with switch and a loop to change the image or do it later in logic
-        petImageLabel = new JLabel(new ImageIcon("rock.png")); // Replace with your image path
-        petImageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        add(petImageLabel, BorderLayout.CENTER);
+        //handeled by main image logic
+        MainImage = new MainImageGUI();
+        add(MainImage.getImageLabel(), BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(5, 1, 10, 10));
 
-        JPanel StatsPannel = new JPanel();
         buttonPanel.setLayout(new GridLayout(5, 1, 10, 10));
 
         feedButton = new JButton("Feed");
-        petButton = new JButton("Pet");
+        petButton = new JButton("Pat");
         walkButton = new JButton("Walk");
         shopButton = new JButton("Shop");
         exitButton = new JButton("Exit");
@@ -56,22 +70,34 @@ public class GameGUI extends JPanel {
         // Add to GameGUI
         add(statsPanel, BorderLayout.SOUTH);
 
-        buttonPanel.add(shopButton);
+        //buttonPanel.add(shopButton);
         buttonPanel.add(feedButton);
         buttonPanel.add(petButton);
         buttonPanel.add(walkButton);
-        buttonPanel.add(exitButton);
 
         add(buttonPanel, BorderLayout.WEST);
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        //setting the tips at the top
+        tipLabel = new JLabel("Tips are loading", SwingConstants.CENTER);
+        topPanel.add(tipLabel, BorderLayout.CENTER);
+        tips = loadTipsFromDB();
+        
+        TipRotation();
 
         JPanel pause = new JPanel(new FlowLayout(FlowLayout.RIGHT)); //right side of sublayout
         pauseButton = new JButton("Pause");
         pause.add(pauseButton);
+        topPanel.add(pause, BorderLayout.EAST);
 
-        add(pause, BorderLayout.NORTH); //sublayout goes as top of main layout
+        add(topPanel, BorderLayout.NORTH); //sublayout goes as top of main layout
+
+        pauseButton.addActionListener((ActionEvent e) -> {
+            parent.showCard("pause");
+        });
 
         shopButton.addActionListener((ActionEvent e) -> {
-            // for when i add a shop
+            // for if i add a shop
         });
 
         feedButton.addActionListener((ActionEvent e) -> {
@@ -83,31 +109,47 @@ public class GameGUI extends JPanel {
         });
 
         walkButton.addActionListener((ActionEvent e) -> {
-            //add walking gui
+            JSlider slider = new JSlider(0, 1000, 500);
+            slider.setMajorTickSpacing(200);
+            slider.setPaintTicks(true);
+            slider.setPaintLabels(true); //making a walk slider
+
+            int result = JOptionPane.showConfirmDialog(null, slider, "Select Walk Distance", JOptionPane.OK_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+            if (result == JOptionPane.OK_OPTION) {
+                int distance = slider.getValue();
+
+                rock.fitness.increase(distance / 10);
+                rock.happy.increase(10);
+                rock.energy.decrease(distance / 20);
+            }
+
         });
 
-        exitButton.addActionListener((ActionEvent e) -> {
-            //add exit function
-        });
-
-        //have some fun drawing the rock at diffrent stages
     }
 
     private void StatUpdate() {
+
         ScheduledExecutorService scheduler;
         scheduler = Executors.newScheduledThreadPool(1);
 
         scheduler.scheduleAtFixedRate(
                 () -> {
-                    HungerBar.setValue(rock.hungervalue());
-                    HappyBar.setValue(rock.happyvalue());
-                    FitnessBar.setValue(rock.fitnessvalue());
-                    EnergyBar.setValue(rock.energyvalue());
+                    if (!IsDead) {
+                        HungerBar.setValue(rock.hungervalue());
+                        HappyBar.setValue(rock.happyvalue());
+                        FitnessBar.setValue(rock.fitnessvalue());
+                        EnergyBar.setValue(rock.energyvalue());
 
-                    statLabels.get("Hunger").setText("Hunger: " + rock.hungervalue() + "%");
-                    statLabels.get("Happiness").setText("Happiness: " + rock.happyvalue() + "%");
-                    statLabels.get("Fitness").setText("Fitness: " + rock.fitnessvalue() + "%");
-                    statLabels.get("Energy").setText("Energy: " + rock.energyvalue() + "%");
+                        statLabels.get("Hunger").setText("Hunger: " + rock.hungervalue() + "%");
+                        statLabels.get("Happiness").setText("Happiness: " + rock.happyvalue() + "%");
+                        statLabels.get("Fitness").setText("Fitness: " + rock.fitnessvalue() + "%");
+                        statLabels.get("Energy").setText("Energy: " + rock.energyvalue() + "%");
+
+                        MainImage.updateEmotionImage(rock); //update main image to match emotion
+                        deathChecks.CheckStats();
+                    }
+
                 },
                 0, 1, TimeUnit.SECONDS
         ); //checks for stat changes every second to update
@@ -156,11 +198,79 @@ public class GameGUI extends JPanel {
         EnergyBar.setMaximum(100);
         EnergyBar.setValue(75);
 
+        deathChecks.setRock(rock);
+
+    }
+
+    //making some tips on rotation to serve as another read I/O file
+    private List<String> loadTipsFromDB() {
+        List<String> tips = new ArrayList<>();
+        String sql = "SELECT message FROM tips";
+        String DB_URL = SaveManager.DB_URL;
+
+        try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                tips.add(rs.getString("message"));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error loading tips: " + e.getMessage());
+            SaveManager.Log("Error loading tips: " + e.getMessage());
+        }
+
+        return tips;
+    }
+    
+    
+
+    private void TipRotation() {
+        if (tips == null || tips.isEmpty()) {
+            return;
+        }
+
+        Timer timer = new Timer(5000, e -> {
+            tipLabel.setText(tips.get(currentTipIndex));
+            if (currentTipIndex == (tips.size() - 1)) {
+                currentTipIndex = 0;
+            } else {
+                currentTipIndex++;
+            }
+        });
+        timer.start();
     }
 
     public void setRock(Rock rock) {
         this.rock = rock;
-        StatUpdate();
+        rock.SetPause(false);
+        setDeath(false);
+        deathChecks.setRock(rock);
+        deathGUI.setRock(rock);
+        SwingUtilities.invokeLater(() -> StatUpdate()); //allow the timer to start after GUI has loaded
+    }
+
+    public void setPause(boolean set) {
+        rock.SetPause(set);//setting from main gui
+    }
+
+    public SaveManager getSaveManager() {
+        return SaveManager;
+    }
+
+    public MainGameGUI getMain() {
+        return Parent;
+    }
+
+    public DeathGUI getDeathGUI() {
+        return deathGUI;
+    }
+
+    public DeathChecks getDeathChecks() {
+        return deathChecks;
+    }
+
+    public void setDeath(boolean set) {
+        IsDead = set;
     }
 
 }

@@ -1,0 +1,130 @@
+SaveManager setup complete, game started
+SaveManager setup complete, game started
+Saved rock: adwdw
+System exiting safely, game ending
+SaveManager setup complete, game started
+Saved rock: adwdw
+System exiting safely, game ending
+SaveManager setup complete, game started
+No tips available.resources\tips.txt (The system cannot find the file specified)
+Rock loaded: adwdw
+Saved rock: adwdw
+System exiting safely, game ending
+SaveManager setup complete, game started
+Rock loaded: adwdw
+Saved rock: adwdw
+System exiting safely, game ending
+SaveManager setup complete, game started
+Rock loaded: adwdw
+Saved rock: adwdw
+System exiting safely, game ending
+SaveManager setup complete, game started
+Rock loaded: adwdw
+Saved rock: adwdw
+System exiting safely, game ending
+SaveManager setup complete, game started
+Rock loaded: adwdw
+Saved rock: adwdw
+System exiting safely, game ending
+SaveManager setup complete, game started
+Rock loaded: adwdw
+Saved rock: adwdw
+System exiting safely, game ending
+SaveManager setup complete, game started
+Rock loaded: adwdw
+Saved rock: adwdw
+System exiting safely, game ending
+SaveManager setup complete, game started
+Rock loaded: adwdw
+Moved adwdw to archive file
+Removed adwdw from save file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+Moved adwdw to archive file
+System exiting safely, game ending
+SaveManager setup complete, game started
+Rock loaded: awdawd
+Moved awdawd to archive file
+Removed awdawd from save file
+Moved awdawd to archive file
+Moved awdawd to archive file
+Moved awdawd to archive file
+System exiting safely, game ending
+SaveManager setup complete, game started
+Rock loaded: dfg
+Moved dfg to archive file
+Removed dfg from save file
+Rock loaded: wdf
+Saved rock: wdf
+System exiting safely, game ending
+SaveManager setup complete, game started
+Rock loaded: wdf
+Moved wdf to archive file
+Removed wdf from save file
+Rock loaded: wdq
+Saved rock: wdq
+System exiting safely, game ending
+SaveManager setup complete, game started
+Rock loaded: rgddrt
+Moved rgddrt to archive file
+Removed rgddrt from save file
+Rock loaded: wdq
+Saved rock: wdq
+Rock loaded: wdq
+Moved wdq to archive file
+Removed wdq from save file
+Rock loaded: jjkk
+Saved rock: jjkk
+SaveManager setup complete, game started
+SaveManager setup complete, game started
+Rock loaded: jjkk
+Saved rock: jjkk
+Rock loaded: jjkk
+Saved rock: jjkk
+Rock loaded: jjkk
+Moved jjkk to archive file
+Removed jjkk from save file
+System exiting safely, game ending

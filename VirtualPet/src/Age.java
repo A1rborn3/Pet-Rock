@@ -9,7 +9,7 @@
  */
 public class Age extends Moodlets {
     public Age(int value) {
-        super("Age", 0, 400, value, 5);
-    }//age is calculated by decreasing, 400 = pebble, 300 = stone, 200 = rock, 100 = boulder
+        super("Age", 0, 300, value, 5);
+    }//age is calculated by decreasing, 300 = pebble, 200 = rock, 100 = boulder
     
 }

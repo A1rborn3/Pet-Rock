@@ -18,6 +18,7 @@ public class Moodlets {
     private int minValue;     // Min value
     private int maxValue;     // Max value
     private int decayRate; // How much to decrease per intervil
+    private boolean paused = false;
     private ScheduledExecutorService scheduler;
 
     public Moodlets(String name, int minValue, int maxValue, int initialValue, int decayRate) {
@@ -40,7 +41,10 @@ public class Moodlets {
     private void startDecay() {
         scheduler = Executors.newScheduledThreadPool(1);
         scheduler.scheduleAtFixedRate(() -> {
-            decrease(decayRate);
+            if (!paused){
+                decrease(decayRate);
+            }
+            
         }, 0, 5, TimeUnit.SECONDS); // time intervil 
     }
     
@@ -48,6 +52,10 @@ public class Moodlets {
         if (scheduler != null && !scheduler.isShutdown()) {
             scheduler.shutdown();
         }
+    }
+    
+    public void SetPause(boolean set){
+        paused = set;
     }
 
 

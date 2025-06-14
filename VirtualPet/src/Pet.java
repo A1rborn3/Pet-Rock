@@ -78,4 +78,11 @@ abstract class Pet { //abstraction
         
         System.out.println("----------------------");
     }
+    
+    public void SetPause(boolean set){
+        hunger.SetPause(set);
+        happy.SetPause(set);
+        fitness.SetPause(set);
+        energy.SetPause(set);
+    }
 }
